@@ -3,63 +3,87 @@ using System.Net.Sockets;
 
 namespace Division42.NetworkTools.PortScan
 {
+    /// <summary>
+    /// Class for scanning a specific port.
+    /// </summary>
     public class PortScanner
     {
-        public PortScanner(string endPointName, int port)
+        /// <summary>
+        /// Creates a new instance of this type.
+        /// </summary>
+        /// <param name="endPointName"></param>
+        /// <param name="port"></param>
+        /// <exception cref="ArgumentOutOfRangeException"></exception>
+        /// <exception cref="ArgumentException"></exception>
+        public PortScanner(String endPointName, Int32 port)
         {
+            if (String.IsNullOrWhiteSpace(endPointName))
+                throw new ArgumentException("Argument \"endPointName\" cannot be null or empty.", "endPointName");
+            if (port < 1 || port > 65535)
+                throw new ArgumentOutOfRangeException("port", "Argument \"port\" must be greater than zero and less than 65535.");
+
             EndPointName = endPointName;
             Port = port;
         }
 
+        /// <summary>
+        /// Gets the port being scanned.
+        /// </summary>
+        public int Port { get; private set; }
 
+        /// <summary>
+        /// Gets the endpoint name (hostname, or IP address).
+        /// </summary>
+        public string EndPointName { get; private set; }
 
-        public int Port { get; set; }
-        public string EndPointName { get; set; }
+        /// <summary>
+        /// Events for when the connection attempt is complete.
+        /// </summary>
+        public event EventHandler<PortScanResultEventArgs> PortScanResult;
 
-        public void AttemptConnectionToPort(object state)
+        /// <summary>
+        /// Begins the connection attempt via TCP.
+        /// </summary>
+        public void AttemptTcpConnectionToPort()
         {
             try
             {
-                try
+                TcpClient client = new TcpClient {ExclusiveAddressUse = false};
+                client.Connect(EndPointName, Port);
+                client.Close();
+
+                if (PortScanResult != null)
                 {
-                    TcpClient client = new TcpClient();
-                    client.ExclusiveAddressUse = false;
-                    client.Connect(EndPointName, Port);
-                    client.Close();
-
-                    if (PortScanResult != null)
-                    {
-                        PortScanResult(this, new PortScanResultEventArgs(EndPointName, Port, PortScanResultEventArgs.PortTypes.Tcp));
-                    }
+                    PortScanResult(this, new PortScanResultEventArgs(EndPointName, Port, 
+                        PortScanResultEventArgs.PortTypes.Tcp));
                 }
-                catch (SocketException)
-                {
-                }
-
-                //try
-                //{
-                //    UdpClient client = new UdpClient();
-                //    client.ExclusiveAddressUse = false;
-                //    client.Connect(EndPointName, Port);
-                //    client.
-                //    client.Close();
-
-                //    if (PortScanResult != null)
-                //    {
-                //        PortScanResult(this, new PortScanResultEventArgs(EndPointName, Port, PortScanResultEventArgs.PortTypes.Udp));
-                //    }
-                //}
-                //catch (SocketException)
-                //{
-                //}
             }
-            finally
+            catch (SocketException)
             {
-//                System.Threading.Interlocked.Decrement(ref ThreadCount);
             }
         }
 
-        public event EventHandler<PortScanResultEventArgs> PortScanResult;
+        /// <summary>
+        /// Begins the connection attempt via UDP.
+        /// </summary>
+        public void AttemptUdpConnectionToPort()
+        {
 
+            try
+            {
+                UdpClient client = new UdpClient { ExclusiveAddressUse = false };
+                client.Connect(EndPointName, Port);
+                client.Close();
+
+                if (PortScanResult != null)
+                {
+                    PortScanResult(this, new PortScanResultEventArgs(EndPointName, Port, 
+                        PortScanResultEventArgs.PortTypes.Udp));
+                }
+            }
+            catch (SocketException)
+            {
+            }
+        }
     }
 }

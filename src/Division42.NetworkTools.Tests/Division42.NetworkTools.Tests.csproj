@@ -51,6 +51,7 @@
   </Choose>
   <ItemGroup>
     <Compile Include="IcmpPing\PingManagerTests.cs" />
+    <Compile Include="PortScan\PortScannerTests.cs" />
     <Compile Include="UnitTest1.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -60,6 +61,7 @@
       <Name>Division42.NetworkTools</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
       <ItemGroup>

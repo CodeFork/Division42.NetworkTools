@@ -39,6 +39,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Extensions\IEnumerableExtensions.cs" />
     <Compile Include="IcmpPing\IcmpPingException.cs" />
     <Compile Include="IcmpPing\IPingManager.cs" />
     <Compile Include="IcmpPing\PingManager.cs" />

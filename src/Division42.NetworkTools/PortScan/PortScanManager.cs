@@ -4,34 +4,97 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using Division42.NetworkTools.Extensions;
 
 namespace Division42.NetworkTools.PortScan
 {
     public class PortScanManager
     {
-        public PortScanManager(string endPointToScan)
+        /// <summary>
+        /// Creates a new instance of this type.
+        /// </summary>
+        /// <param name="endPointToScan">The hostname or IP address to scan.</param>
+        public PortScanManager(String endPointToScan)
         {
+            if (String.IsNullOrWhiteSpace(endPointToScan))
+                throw new ArgumentException("Argument \"endPointToScan\" cannot be null or empty.", "endPointToScan");
+
             EndPoint = endPointToScan;
+            CurrentCancellationTokenSource = new CancellationTokenSource();
         }
 
-        public string EndPoint { get; set; }
+        /// <summary>
+        /// Gets the current endpoint to be scanned.
+        /// </summary>
+        public String EndPoint { get; private set; }
 
+        /// <summary>
+        /// Gets the current cancellation token source.
+        /// </summary>
+        public CancellationTokenSource CurrentCancellationTokenSource { get; private set; }
+
+        /// <summary>
+        /// Event for when there is a result from the port scan.
+        /// </summary>
         public event EventHandler<PortScanResultEventArgs> PortScanResult;
 
+        /// <summary>
+        /// Starts the port scan. Scans ports 1 through 65535.
+        /// </summary>
         public void Start()
         {
-            for (int index = 1; index < 100; index++)
+            Start(1, UInt16.MaxValue);
+        }
+
+        /// <summary>
+        /// Starts the port scan.
+        /// </summary>
+        /// <param name="startingPortNumber">The port number to inclusively start scanning. (e.g. 1)</param>
+        /// <param name="endingPortNumber">The port number to inclusively stop scanning. (e.g. 65535)</param>
+        /// <exception cref="ArgumentOutOfRangeException"></exception>
+        public void Start(Int32 startingPortNumber, Int32 endingPortNumber)
+        {
+            if (startingPortNumber < 1)
+                throw new ArgumentOutOfRangeException("startingPortNumber", "Argument \"startingPortNumber\" must be greater than zero.");
+            if (endingPortNumber > 65535)
+                throw new ArgumentOutOfRangeException("endingPortNumber", "Argument \"endingPortNumber\" must be less than 65535.");
+
+            for (int index = startingPortNumber; index <= endingPortNumber; index++)
             {
-                if (_shouldCancel)
+                if ( CurrentCancellationTokenSource.IsCancellationRequested)
                     return;
 
                 PortScanner scanner = new PortScanner(EndPoint, index);
                 scanner.PortScanResult += new EventHandler<PortScanResultEventArgs>(scanner_PortScanResult);
 
-                System.Threading.Interlocked.Increment(ref PortScanManager.ThreadCount);
-                ThreadPool.QueueUserWorkItem(scanner.AttemptConnectionToPort);
+                
+                _tasks.Add(new Task(() =>
+                {
+                    scanner.AttemptTcpConnectionToPort();
+                }, CurrentCancellationTokenSource.Token));
+                _tasks.Add(new Task(() =>
+                {
+                    scanner.AttemptUdpConnectionToPort();
+                }, CurrentCancellationTokenSource.Token));
             }
         }
+
+        /// <summary>
+        /// Stops the port scan.
+        /// </summary>
+        public void Stop()
+        {
+            CurrentCancellationTokenSource.Cancel();
+        }
+
+        /// <summary>
+        /// Gets or sets the currently running tasks.
+        /// </summary>
+        public IEnumerable<Task> Tasks
+        {
+            get { return _tasks; }
+        } private List<Task> _tasks = new List<Task>();
+
 
         private void scanner_PortScanResult(object sender, PortScanResultEventArgs e)
         {
@@ -39,17 +102,6 @@ namespace Division42.NetworkTools.PortScan
             {
                 PortScanResult(this, e);
             }
-            System.Threading.Interlocked.Decrement(ref ThreadCount);
         }
-
-        public void Stop()
-        {
-            _shouldCancel = true;
-        }
-
-        private bool _shouldCancel = false;
-
-
-        public static int ThreadCount = 0;
     }
 }

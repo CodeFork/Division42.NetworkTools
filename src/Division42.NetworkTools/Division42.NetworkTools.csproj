@@ -52,6 +52,7 @@
     <Compile Include="PortScan\PortScanManager.cs" />
     <Compile Include="PortScan\PortScanner.cs" />
     <Compile Include="PortScan\PortScanResultEventArgs.cs" />
+    <Compile Include="PortScan\PortTypes.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TraceRoute\TraceRouteCompleteEventArgs.cs" />
     <Compile Include="TraceRoute\TraceRouteException.cs" />

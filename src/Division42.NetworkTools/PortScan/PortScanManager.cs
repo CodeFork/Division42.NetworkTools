@@ -8,6 +8,9 @@ using Division42.NetworkTools.Extensions;
 
 namespace Division42.NetworkTools.PortScan
 {
+    /// <summary>
+    /// Class for managing a port scan.
+    /// </summary>
     public class PortScanManager
     {
         /// <summary>
@@ -43,7 +46,7 @@ namespace Division42.NetworkTools.PortScan
         /// </summary>
         public void Start()
         {
-            Start(1, UInt16.MaxValue);
+            Start(1, UInt16.MaxValue, PortTypes.Tcp);
         }
 
         /// <summary>
@@ -52,30 +55,38 @@ namespace Division42.NetworkTools.PortScan
         /// <param name="startingPortNumber">The port number to inclusively start scanning. (e.g. 1)</param>
         /// <param name="endingPortNumber">The port number to inclusively stop scanning. (e.g. 65535)</param>
         /// <exception cref="ArgumentOutOfRangeException"></exception>
-        public void Start(Int32 startingPortNumber, Int32 endingPortNumber)
+        public void Start(Int32 startingPortNumber, Int32 endingPortNumber, PortTypes typesToScan)
         {
             if (startingPortNumber < 1)
-                throw new ArgumentOutOfRangeException("startingPortNumber", "Argument \"startingPortNumber\" must be greater than zero.");
+                throw new ArgumentOutOfRangeException("startingPortNumber",
+                    "Argument \"startingPortNumber\" must be greater than zero.");
             if (endingPortNumber > 65535)
-                throw new ArgumentOutOfRangeException("endingPortNumber", "Argument \"endingPortNumber\" must be less than 65535.");
+                throw new ArgumentOutOfRangeException("endingPortNumber",
+                    "Argument \"endingPortNumber\" must be less than 65535.");
 
             for (int index = startingPortNumber; index <= endingPortNumber; index++)
             {
-                if ( CurrentCancellationTokenSource.IsCancellationRequested)
+                if (CurrentCancellationTokenSource.IsCancellationRequested)
                     return;
 
                 PortScanner scanner = new PortScanner(EndPoint, index);
                 scanner.PortScanResult += new EventHandler<PortScanResultEventArgs>(scanner_PortScanResult);
 
-                
-                _tasks.Add(new Task(() =>
+                switch (typesToScan)
                 {
-                    scanner.AttemptTcpConnectionToPort();
-                }, CurrentCancellationTokenSource.Token));
-                _tasks.Add(new Task(() =>
-                {
-                    scanner.AttemptUdpConnectionToPort();
-                }, CurrentCancellationTokenSource.Token));
+                    case PortTypes.Tcp:
+                        {
+                            _tasks.Add(Task.Factory.StartNew(() => scanner.AttemptTcpConnectionToPort(),
+                                CurrentCancellationTokenSource.Token));
+                            break;
+                        }
+                    case PortTypes.Udp:
+                        {
+                            _tasks.Add(Task.Factory.StartNew(() => scanner.AttemptUdpConnectionToPort(),
+                                CurrentCancellationTokenSource.Token));
+                            break;
+                        }
+                }
             }
         }
 
@@ -93,7 +104,7 @@ namespace Division42.NetworkTools.PortScan
         public IEnumerable<Task> Tasks
         {
             get { return _tasks; }
-        } private List<Task> _tasks = new List<Task>();
+        } private readonly List<Task> _tasks = new List<Task>();
 
 
         private void scanner_PortScanResult(object sender, PortScanResultEventArgs e)

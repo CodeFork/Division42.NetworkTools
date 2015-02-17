@@ -16,15 +16,10 @@ namespace Division42.NetworkTools.PortScan
             PortType = portType;
         }
 
-        public int Port { get; set; }
-        public string EndPoint { get; set; }
+        public Int32 Port { get; set; }
+        public String EndPoint { get; set; }
         public PortTypes PortType { get; set; }
 
-        public enum PortTypes
-        {
-            Unknown,
-            Udp,
-            Tcp,
-        }
+
     }
 }

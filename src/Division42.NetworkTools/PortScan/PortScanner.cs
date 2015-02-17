@@ -55,7 +55,7 @@ namespace Division42.NetworkTools.PortScan
                 if (PortScanResult != null)
                 {
                     PortScanResult(this, new PortScanResultEventArgs(EndPointName, Port, 
-                        PortScanResultEventArgs.PortTypes.Tcp));
+                        PortTypes.Tcp));
                 }
             }
             catch (SocketException)
@@ -78,7 +78,7 @@ namespace Division42.NetworkTools.PortScan
                 if (PortScanResult != null)
                 {
                     PortScanResult(this, new PortScanResultEventArgs(EndPointName, Port, 
-                        PortScanResultEventArgs.PortTypes.Udp));
+                        PortTypes.Udp));
                 }
             }
             catch (SocketException)

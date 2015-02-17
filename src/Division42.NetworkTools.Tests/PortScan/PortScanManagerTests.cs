@@ -109,7 +109,7 @@ namespace Division42.NetworkTools.Tests.PortScan
         }
 
         [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
+        [ExpectedException(typeof(ArgumentOutOfRangeException))]
         public void StartWithLowStartArguments_ThrowsException()
         {
             Boolean wasFound = false;
@@ -123,11 +123,11 @@ namespace Division42.NetworkTools.Tests.PortScan
 
             instance.Start(-5,159, PortTypes.Tcp);
 
-            Assert.Fail("Should have thrown ArgumentException.");
+            Assert.Fail("Should have thrown ArgumentOutOfRangeException.");
         }
 
         [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
+        [ExpectedException(typeof(ArgumentOutOfRangeException))]
         public void StartWithHighStopArguments_ThrowsException()
         {
             Boolean wasFound = false;
@@ -141,7 +141,7 @@ namespace Division42.NetworkTools.Tests.PortScan
 
             instance.Start(120, UInt16.MaxValue+1, PortTypes.Tcp);
 
-            Assert.Fail("Should have thrown ArgumentException.");
+            Assert.Fail("Should have thrown ArgumentOutOfRangeException.");
         }
     }
 }

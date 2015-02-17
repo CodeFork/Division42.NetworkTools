@@ -54,7 +54,6 @@
     <Compile Include="PortScan\PortScannerTests.cs" />
     <Compile Include="PortScan\PortScanManagerTests.cs" />
     <Compile Include="TraceRoute\TraceRouteManagerTests.cs" />
-    <Compile Include="UnitTest1.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

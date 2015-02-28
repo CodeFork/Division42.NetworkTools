@@ -13,7 +13,7 @@ namespace Division42.NetworkTools.TraceRoute
     /// <summary>
     /// Class for managing a network trace route.
     /// </summary>
-    public class TraceRouteManager
+    public class TraceRouteManager : ITraceRouteManager
     {
         /// <summary>
         /// Creates a new instance of this type.
@@ -23,7 +23,14 @@ namespace Division42.NetworkTools.TraceRoute
             CurrentCancellationTokenSource = new CancellationTokenSource();
         }
 
+        /// <summary>
+        /// Event for when a trace route node is found.
+        /// </summary>
         public event EventHandler<TraceRouteNodeFoundEventArgs> TraceRouteNodeFound;
+
+        /// <summary>
+        /// Event for when the trace route is complete.
+        /// </summary>
         public event EventHandler<TraceRouteCompleteEventArgs> TraceRouteComplete;
 
         /// <summary>
@@ -31,6 +38,13 @@ namespace Division42.NetworkTools.TraceRoute
         /// </summary>
         public CancellationTokenSource CurrentCancellationTokenSource { get; private set; }
 
+        /// <summary>
+        /// Executes the trace route.
+        /// </summary>
+        /// <param name="host">The destination host to which you wish to find the route.</param>
+        /// <returns>All of the hops between the current computers and the 
+        /// <paramref name="host"/> computer.</returns>
+        /// <exception cref="ArgumentException"></exception>
         public Task<IEnumerable<TraceRouteHopDetail>> ExecuteTraceRoute(String host)
         {
             if (String.IsNullOrWhiteSpace(host))
@@ -75,20 +89,22 @@ namespace Division42.NetworkTools.TraceRoute
 
                             TimeSpan responseTime = GetResponseTime(reply.Address.ToString());
 
+                            // If we hit the last address or found the host, then stop.
+                            if (reply.Address.Equals(lastReplyAddress) || reply.Address.ToString().Equals(host))
+                                break;
+                         
                             TraceRouteHopDetail detail = new TraceRouteHopDetail(options.Ttl, reply.Address.ToString(),
                                 hostName, responseTime);
+                            
                             output.Add(detail);
 
                             if (TraceRouteNodeFound != null)
                                 TraceRouteNodeFound(this, new TraceRouteNodeFoundEventArgs(detail));
-
-                            if (reply.Address.ToString().Equals(host))
-                                break;
-
-
                         }
                         if (options.Ttl >= 30)
                             break;
+
+                        lastReplyAddress = reply.Address;
 
                         options.Ttl += 1;
                         reply = ping.Send(host, 5000, buffer, options);
@@ -129,9 +145,14 @@ namespace Division42.NetworkTools.TraceRoute
             return TimeSpan.MaxValue;
         }
 
+        /// <summary>
+        /// Cancels the current execution.
+        /// </summary>
         public void Cancel()
         {
             CurrentCancellationTokenSource.Cancel();
         }
+
+        private IPAddress lastReplyAddress;
     }
 }

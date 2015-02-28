@@ -11,7 +11,7 @@ namespace Division42.NetworkTools.PortScan
     /// <summary>
     /// Class for managing a port scan.
     /// </summary>
-    public class PortScanManager
+    public class PortScanManager : IPortScanManager
     {
         /// <summary>
         /// Creates a new instance of this type.

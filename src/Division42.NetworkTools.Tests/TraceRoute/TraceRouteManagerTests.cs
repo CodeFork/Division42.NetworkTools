@@ -36,7 +36,7 @@ namespace Division42.NetworkTools.Tests.TraceRoute
                 Debug.WriteLine("Trace complete.");
             };
 
-            String host = "www.google.com";
+            String host = "www.microsoft.com";
             Task<IEnumerable<TraceRouteHopDetail>> results = instance.ExecuteTraceRoute(host);
 
             results.Wait();

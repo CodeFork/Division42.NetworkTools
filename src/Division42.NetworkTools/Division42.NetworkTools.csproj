@@ -28,6 +28,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Release\Division42.NetworkTools.XML</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -48,17 +49,20 @@
     <Compile Include="IcmpPing\PingResultEventArgs.cs" />
     <Compile Include="INetworkManager.cs" />
     <Compile Include="NetworkToolsException.cs" />
+    <Compile Include="PortScan\IPortScanManager.cs" />
     <Compile Include="PortScan\PortScanException.cs" />
     <Compile Include="PortScan\PortScanManager.cs" />
     <Compile Include="PortScan\PortScanner.cs" />
     <Compile Include="PortScan\PortScanResultEventArgs.cs" />
     <Compile Include="PortScan\PortTypes.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TraceRoute\ITraceRouteManager.cs" />
     <Compile Include="TraceRoute\TraceRouteCompleteEventArgs.cs" />
     <Compile Include="TraceRoute\TraceRouteException.cs" />
     <Compile Include="TraceRoute\TraceRouteHopDetail.cs" />
     <Compile Include="TraceRoute\TraceRouteManager.cs" />
     <Compile Include="TraceRoute\TraceRouteNodeFoundEventArgs.cs" />
+    <Compile Include="Whois\IWhoisManager.cs" />
     <Compile Include="Whois\WhoisException.cs" />
     <Compile Include="Whois\WhoisManager.cs" />
   </ItemGroup>

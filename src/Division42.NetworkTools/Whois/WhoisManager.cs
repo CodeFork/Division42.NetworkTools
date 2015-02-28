@@ -8,23 +8,45 @@ using System.Threading.Tasks;
 
 namespace Division42.NetworkTools.Whois
 {
-    public class WhoisManager
+    /// <summary>
+    /// Class for executing Whois requests.
+    /// </summary>
+    public class WhoisManager : IWhoisManager
     {
-        private const string DefaultWhoisLookupFormat = "{0}.whois-servers.net";
-
-        public static string ExecuteWhoisForDomain(string domain)
+        /// <summary>
+        /// Executes whois for a domain.
+        /// </summary>
+        /// <param name="domain">The domain to lookup.</param>
+        /// <exception cref="ArgumentException"></exception>
+        /// <returns>A text string with the whois information.</returns>
+        public String ExecuteWhoisForDomain(String domain)
         {
-            string[] domainParts = domain.Split('.');
-            string topLevelDomain = domainParts[domainParts.Length - 1];
-            string lookupServer = string.Format(DefaultWhoisLookupFormat, topLevelDomain);
+            if (String.IsNullOrWhiteSpace(domain))
+                throw new ArgumentException("Argument \"domain\" cannot be null or empty.", "domain");
+
+            String[] domainParts = domain.Split('.');
+            String topLevelDomain = domainParts[domainParts.Length - 1];
+            String lookupServer = String.Format(DefaultWhoisLookupFormat, topLevelDomain);
 
             return ExecuteWhoisForDomain(domain, lookupServer);
         }
 
-        public static string ExecuteWhoisForDomain(string domain, string whoisServer)
+        /// <summary>
+        /// Executes whois for a domain.
+        /// </summary>
+        /// <param name="domain">The domain to lookup.</param>
+        /// <param name="whoisServer">The whois server to use.</param>
+        /// <exception cref="ArgumentException"></exception>
+        /// <returns>A text string with the whois information.</returns>
+        public String ExecuteWhoisForDomain(String domain, String whoisServer)
         {
+            if (String.IsNullOrWhiteSpace(domain))
+                throw new ArgumentException("Argument \"domain\" cannot be null or empty.", "domain");
+            if (String.IsNullOrWhiteSpace(whoisServer))
+                throw new ArgumentException("Argument \"whoisServer\" cannot be null or empty.", "whoisServer");
+
             IPAddress whoisServerIPAddress = Dns.GetHostEntry(whoisServer).AddressList[0];
-            int whoisPort = 43;
+            Int32 whoisPort = 43;
             IPEndPoint lookupServerEndPoint = new IPEndPoint(whoisServerIPAddress, whoisPort);
 
             StringBuilder output = new StringBuilder();
@@ -44,7 +66,6 @@ namespace Division42.NetworkTools.Whois
                     while (bytesRecievedCount > 0)
                     {
                         output.Append(ASCIIEncoding.ASCII.GetString(response, 0, bytesRecievedCount).Replace("\n", Environment.NewLine));
-                        //output.Append(ASCIIEncoding.ASCII.GetString(response, 0, bytesRecievedCount));
                         bytesRecievedCount = socket.Receive(response);
                     }
                     socket.Shutdown(SocketShutdown.Both);
@@ -59,25 +80,34 @@ namespace Division42.NetworkTools.Whois
 
         }
 
-        public static List<string> FindWhoisServerInOutput(string whoisOutput)
+        /// <summary>
+        /// Attempts to find the authority whois server, in another whois server output.
+        /// </summary>
+        /// <param name="whoisOutput">The whois output to search.</param>
+        /// <exception cref="ArgumentException"></exception>
+        /// <returns>A list of all of the found whois servers, or null.</returns>
+        public IEnumerable<String> FindWhoisServerInOutput(String whoisOutput)
         {
-            List<string> output = new List<string>();
+            if (String.IsNullOrWhiteSpace(whoisOutput))
+                throw new ArgumentException("Argument \"whoisOutput\" cannot be null or empty.", "whoisOutput");
+
+            List<String> output = new List<String>();
 
             if (whoisOutput.Contains("Whois Server: "))
             {
-                int lastPosition = 0;
+                Int32 lastPosition = 0;
                 while (true)
                 {
-                    int startPosition = whoisOutput.IndexOf("Whois Server:", lastPosition);
+                    Int32 startPosition = whoisOutput.IndexOf("Whois Server:", lastPosition);
 
                     if (startPosition > 0)
                     {
 
-                        int endPosition = whoisOutput.IndexOf('\n', startPosition + 1);
+                        Int32 endPosition = whoisOutput.IndexOf('\n', startPosition + 1);
 
-                        string line = whoisOutput.Substring(startPosition, endPosition - startPosition);
+                        String line = whoisOutput.Substring(startPosition, endPosition - startPosition);
 
-                        string[] lineParts = line.Split(':');
+                        String[] lineParts = line.Split(':');
 
                         if (lineParts.GetUpperBound(0) > 0)
                         {
@@ -94,5 +124,7 @@ namespace Division42.NetworkTools.Whois
             }
             return output;
         }
+
+        private const String DefaultWhoisLookupFormat = "{0}.whois-servers.net";
     }
 }

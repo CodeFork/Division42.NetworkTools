@@ -2,6 +2,8 @@
 
 This is a library written against .NET 4.0 which offers basic network tools like: ping, traceroute, whois, and port scanning.
 
+See this blog post for details: http://blog.robseder.com/2015/02/28/new-github-and-nuget-package-division42-networktools/
+
 ##What is this?
 This is the Visual Studio 2013 / C# / Class Library source code for the "Division42.NetworkTools" NuGet package found [here](https://www.nuget.org/packages/Division42.NetworkTools/).
 

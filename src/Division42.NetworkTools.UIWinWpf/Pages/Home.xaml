@@ -1,0 +1,20 @@
+﻿<UserControl x:Class="Division42.NetworkTools.UIWinWpf.Pages.Home"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mui="http://firstfloorsoftware.com/ModernUI"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300">
+    <Grid>
+<mui:ModernTab Layout="List" SelectedSource="/Pages/NetworkTools/Welcome.xaml">
+    <mui:ModernTab.Links>
+        <mui:Link DisplayName="welcome" Source="/Pages/NetworkTools/Welcome.xaml" />
+        <mui:Link DisplayName="ping" Source="/Pages/NetworkTools/Ping.xaml" />
+        <mui:Link DisplayName="traceroute" Source="/Pages/NetworkTools/TraceRoute.xaml" />
+        <mui:Link DisplayName="port scan" Source="/Pages/NetworkTools/PortScan.xaml" />
+        <mui:Link DisplayName="whois" Source="/Pages/NetworkTools/Whois.xaml" />
+    </mui:ModernTab.Links>
+</mui:ModernTab>
+    </Grid>
+</UserControl>

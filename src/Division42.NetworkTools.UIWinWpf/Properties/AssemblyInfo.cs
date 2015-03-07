@@ -1,15 +1,16 @@
 ﻿using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
+using System.Windows.Media;
 
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Division42.NetworkTools")]
+[assembly: AssemblyTitle("Division42.NetworkTools.UIWinWpf")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("Division42.NetworkTools")]
+[assembly: AssemblyProduct("Division42.NetworkTools.UIWinWpf")]
 [assembly: AssemblyCopyright("Copyright © 2015 Division42 LLC")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -20,7 +21,11 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("c55b483e-0a91-43dd-9253-c431fcf6c1cf")]
+[assembly: Guid("6e3d1bfb-1187-4193-b188-f6cd9ee20c63")]
+
+// required to support per-monitor DPI awareness in Windows 8.1+
+// see also https://mui.codeplex.com/wikipage?title=Per-monitor%20DPI%20awareness
+[assembly: DisableDpiAwareness]
 
 // Version information for an assembly consists of the following four values:
 //

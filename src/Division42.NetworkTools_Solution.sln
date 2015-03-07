@@ -10,7 +10,10 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "NuGet", "NuGet", "{B652A803-E42F-46A0-834B-52608981AB21}"
 	ProjectSection(SolutionItems) = preProject
 		..\nuget\Division42.NetworkTools.1.0.0.nupkg = ..\nuget\Division42.NetworkTools.1.0.0.nupkg
+		..\nuget\Division42.NetworkTools.1.1.0.nupkg = ..\nuget\Division42.NetworkTools.1.1.0.nupkg
 	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Division42.NetworkTools.UIWinWpf", "Division42.NetworkTools.UIWinWpf\Division42.NetworkTools.UIWinWpf.csproj", "{4A855E1B-BC49-4971-91AC-8A9F8E222483}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -26,6 +29,10 @@ Global
 		{57BC600D-568A-408F-9087-638396E471E7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{57BC600D-568A-408F-9087-638396E471E7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{57BC600D-568A-408F-9087-638396E471E7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4A855E1B-BC49-4971-91AC-8A9F8E222483}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4A855E1B-BC49-4971-91AC-8A9F8E222483}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4A855E1B-BC49-4971-91AC-8A9F8E222483}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4A855E1B-BC49-4971-91AC-8A9F8E222483}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

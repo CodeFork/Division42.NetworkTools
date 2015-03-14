@@ -27,6 +27,19 @@ namespace Division42.NetworkTools.UIWinWpf.ViewModels
         } private String _domainName = default(String);
 
         /// <summary>
+        /// Gets whether this instance is currently executing.
+        /// </summary>
+        public Boolean IsActive
+        {
+            get { return _isActive; }
+            set
+            {
+                _isActive = value;
+                OnPropertyChanged("IsActive");
+            }
+        } private Boolean _isActive = false;
+
+        /// <summary>
         /// Gets or sets the result of the whois call.
         /// </summary>
         public String WhoisResult
@@ -68,6 +81,7 @@ namespace Division42.NetworkTools.UIWinWpf.ViewModels
         {
             _canExecute = false;
             OnCanExecuteChanged();
+            IsActive = true;
 
             CurrentWhoisManager = new WhoisManager();
 
@@ -90,6 +104,8 @@ namespace Division42.NetworkTools.UIWinWpf.ViewModels
 
                     _canExecute = true;
                     OnCanExecuteChanged();
+
+                    IsActive = false;
                 });
             });
 

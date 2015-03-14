@@ -26,6 +26,8 @@
                 </Grid>
                 <ListView ItemsSource="{Binding PingResults}">
                 </ListView>
+                <mui:ModernProgressRing Width="80" Height="80" IsActive="{Binding IsActive}" 
+                                            Style="{StaticResource WaveProgressRingStyle}" />
             </StackPanel>
         </ScrollViewer>
     </Grid>

@@ -23,4 +23,5 @@
         <mui:Link DisplayName="settings" Source="/Pages/SettingsPage.xaml" />
         <mui:Link DisplayName="help" Source="https://github.com/Division42LLC/Division42.NetworkTools/wiki" />
     </mui:ModernWindow.TitleLinks>
+    
 </mui:ModernWindow>

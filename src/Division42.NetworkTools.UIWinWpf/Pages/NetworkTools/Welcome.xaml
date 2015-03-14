@@ -10,14 +10,7 @@
         <ScrollViewer>
             <StackPanel MinWidth="200">
                 <TextBlock Text="WELCOME" Style="{StaticResource Heading2}" />
-                <TextBlock Text="This is a WPF UI for the Division42 Network Tools open source library. This uses the Modern UI for WPF framework available via NuGet from FirstFloor." TextWrapping="Wrap" />
-                <TextBlock Text=""/>
-                <TextBlock><Hyperlink NavigateUri="https://visualstudiogallery.msdn.microsoft.com/7a4362a7-fe5d-4f9d-bc7b-0c0dc272fe31" TargetName="_blank" RequestNavigate="Hyperlink_RequestNavigate">Download .vsix installer on Visual Studio Gallery</Hyperlink></TextBlock>
-                <TextBlock Text=""/>
-                <TextBlock Text="For more information on the Division42 Network Tools open source library:" TextWrapping="Wrap" />
-                <TextBlock Text=""/>
-                <TextBlock><Hyperlink NavigateUri="https://github.com/Division42LLC/Division42.NetworkTools" RequestNavigate="Hyperlink_RequestNavigate">https://github.com/Division42LLC/Division42.NetworkTools</Hyperlink></TextBlock>
-                <TextBlock Text=""/>
+                <mui:BBCodeBlock BBCode="This is a WPF UI for the Division42 Network Tools open source library. This uses the Modern UI for WPF framework available via NuGet from FirstFloor.&#13;&#10;&#13;&#10;[url=https://visualstudiogallery.msdn.microsoft.com/7a4362a7-fe5d-4f9d-bc7b-0c0dc272fe31]Download .vsix installer on Visual Studio Gallery[/url]&#13;&#10;&#13;&#10;For more information on the Division42 Network Tools open source library: &#13;&#10;&#13;&#10;[url=https://github.com/Division42LLC/Division42.NetworkTools]https://github.com/Division42LLC/Division42.NetworkTools[/url]" />
             </StackPanel>
         </ScrollViewer>
     </Grid>

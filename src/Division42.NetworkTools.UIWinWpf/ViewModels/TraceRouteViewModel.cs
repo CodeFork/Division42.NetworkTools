@@ -28,6 +28,19 @@ namespace Division42.NetworkTools.UIWinWpf.ViewModels
             }
         } private String _hostName = default(String);
 
+        /// <summary>
+        /// Gets whether this instance is currently executing.
+        /// </summary>
+        public Boolean IsActive
+        {
+            get { return _isActive; }
+            set
+            {
+                _isActive = value;
+                OnPropertyChanged("IsActive");
+            }
+        } private Boolean _isActive = false;
+
         public ObservableCollection<TraceRouteHopDetail> TraceRouteResults { get; protected set; }
 
         /// <summary>
@@ -57,6 +70,7 @@ namespace Division42.NetworkTools.UIWinWpf.ViewModels
         public async void Execute(object parameter)
         {
             _canExecute = false;
+            IsActive = true;
             OnCanExecuteChanged();
 
             CurrentTraceRouteManager = new TraceRouteManager();
@@ -73,6 +87,8 @@ namespace Division42.NetworkTools.UIWinWpf.ViewModels
             
             _canExecute = true;
             OnCanExecuteChanged();
+
+            IsActive = false;
         }
 
         /// <summary>

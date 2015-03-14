@@ -16,6 +16,7 @@ namespace Division42.NetworkTools.UIWinWpf.ViewModels
         public PingResultViewModel()
         {
             PingResults = new ObservableCollection<PingResultEventArgs>();
+            IsActive = false;
         }
 
         public IPingManager CurrentPingManager { get; set; }
@@ -33,6 +34,19 @@ namespace Division42.NetworkTools.UIWinWpf.ViewModels
                 OnCanExecuteChanged();
             }
         } private String _hostName = default(String);
+
+        /// <summary>
+        /// Gets whether this instance is currently executing.
+        /// </summary>
+        public Boolean IsActive
+        {
+            get { return _isActive; }
+            set
+            {
+                _isActive = value;
+                OnPropertyChanged("IsActive");
+            }
+        } private Boolean _isActive = false;
 
         public ObservableCollection<PingResultEventArgs> PingResults { get; protected set; }
 
@@ -52,6 +66,7 @@ namespace Division42.NetworkTools.UIWinWpf.ViewModels
                 return true;
             else
                 return false;
+
         } Boolean _canExecute = true;
 
         /// <summary>
@@ -63,13 +78,15 @@ namespace Division42.NetworkTools.UIWinWpf.ViewModels
         public void Execute(object parameter)
         {
             _canExecute = false;
+            IsActive = true;
             OnCanExecuteChanged();
 
             CurrentPingManager = new PingManager(HostName, TimeSpan.FromSeconds(1));
             PingResults.Clear();
             CurrentPingManager.PingResult += (sender, e) =>
             {
-                App.CurrentDispatcher.Invoke(() => {
+                App.CurrentDispatcher.Invoke(() =>
+                {
                     PingResults.Add(e);
                 });
             };
@@ -85,6 +102,7 @@ namespace Division42.NetworkTools.UIWinWpf.ViewModels
                 {
                     _canExecute = true;
                     OnCanExecuteChanged();
+                    IsActive = false;
                 });
             });
         }

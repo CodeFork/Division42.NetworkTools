@@ -27,8 +27,9 @@
                 </Grid>
                 <TextBlock Text="Scans TCP ports 1 through 600"/>
                 <ListView ItemsSource="{Binding PortScanResults}">
-
                 </ListView>
+                <mui:ModernProgressRing Width="80" Height="80" IsActive="{Binding IsActive}" 
+                                            Style="{StaticResource WaveProgressRingStyle}" />
             </StackPanel>
         </ScrollViewer>
     </Grid>

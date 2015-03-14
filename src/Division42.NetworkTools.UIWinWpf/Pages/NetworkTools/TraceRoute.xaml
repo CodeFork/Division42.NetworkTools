@@ -26,8 +26,10 @@
                     <Button Grid.Column="1" Content="Trace Route" Command="{Binding Mode=OneWay}"/>
                 </Grid>
                 <ListView ItemsSource="{Binding TraceRouteResults}" FontFamily="Lucida Console">
-
                 </ListView>
+
+                <mui:ModernProgressRing Width="80" Height="80" IsActive="{Binding IsActive}" 
+                                            Style="{StaticResource WaveProgressRingStyle}" />
             </StackPanel>
         </ScrollViewer>
     </Grid>

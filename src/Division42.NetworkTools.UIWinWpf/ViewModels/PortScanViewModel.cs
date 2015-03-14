@@ -18,6 +18,19 @@ namespace Division42.NetworkTools.UIWinWpf.ViewModels
         public IPortScanManager CurrentPortScanManager { get; set; }
 
         /// <summary>
+        /// Gets whether this instance is currently executing.
+        /// </summary>
+        public Boolean IsActive
+        {
+            get { return _isActive; }
+            set
+            {
+                _isActive = value;
+                OnPropertyChanged("IsActive");
+            }
+        } private Boolean _isActive = false;
+
+        /// <summary>
         /// Gets or sets hostname.
         /// </summary>
         public String HostName
@@ -60,6 +73,7 @@ namespace Division42.NetworkTools.UIWinWpf.ViewModels
         public void Execute(object parameter)
         {
             _canExecute = false;
+            IsActive = true;
             OnCanExecuteChanged();
 
             CurrentPortScanManager = new PortScanManager(HostName);
@@ -82,6 +96,7 @@ namespace Division42.NetworkTools.UIWinWpf.ViewModels
                 {
                     _canExecute = true;
                     OnCanExecuteChanged();
+                    IsActive = false;
                 });
             });            
         }
